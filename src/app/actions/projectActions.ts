@@ -29,7 +29,8 @@ export async function getProjectByToken(token: string) {
     .single();
 
   if (error) {
-    console.error('Error fetching project by token:', error);
+    console.error('--- SUPABASE ERROR IN getProjectByToken ---');
+    console.error(JSON.stringify(error, null, 2));
     throw new Error('Failed to fetch project details.');
   }
 

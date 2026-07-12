@@ -5,10 +5,11 @@ import { Lock } from 'lucide-react';
 export default async function ReviewPage({
   params,
 }: {
-  params: { access_token: string };
+  params: Promise<{ access_token: string }>;
 }) {
   try {
-    const project = await getProjectByToken(params.access_token);
+    const resolvedParams = await params;
+    const project = await getProjectByToken(resolvedParams.access_token);
 
     const isLocked = project.current_round > project.allowed_revisions;
 

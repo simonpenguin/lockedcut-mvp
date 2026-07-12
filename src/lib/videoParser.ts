@@ -20,7 +20,7 @@ export function parseVideoUrl(url: string): ParsedVideo {
 
   // Check for YouTube
   // Matches: youtube.com/watch?v=ID, youtu.be/ID, youtube.com/embed/ID
-  const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+  const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i;
   const ytMatch = cleanUrl.match(ytRegex);
   if (ytMatch && ytMatch[1]) {
     const videoId = ytMatch[1];

@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import ReactPlayer from 'react-player';
+import { useState, useRef, useEffect } from 'react';
+import SmartPlayer, { SmartPlayerRef } from '@/components/SmartPlayer';
 import { ProjectData, submitRevisionRound } from '@/app/actions/projectActions';
+import { parseVideoUrl } from '@/lib/videoParser';
 import { Send, Clock, Trash2 } from 'lucide-react';
 
 interface ReviewClientProps {
@@ -15,13 +16,18 @@ interface DraftNote {
 }
 
 export default function ReviewClient({ project }: ReviewClientProps) {
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<SmartPlayerRef>(null);
   
+  const [isMounted, setIsMounted] = useState(false);
   const [draftNotes, setDraftNotes] = useState<DraftNote[]>([]);
   const [currentInput, setCurrentInput] = useState('');
   const [activeTimestamp, setActiveTimestamp] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Format seconds to MM:SS
   const formatTime = (seconds: number) => {
@@ -30,20 +36,18 @@ export default function ReviewClient({ project }: ReviewClientProps) {
     return `${m}:${s}`;
   };
 
-  const handleInputFocus = () => {
+  const handleInputFocus = async () => {
     if (playerRef.current && activeTimestamp === null) {
-      // Capture the exact runtime value when they start typing a new note
-      setActiveTimestamp(playerRef.current.getCurrentTime());
-      // Optionally pause the video when they start typing
-      // Note: ReactPlayer requires playing state to be controlled if we want to pause programmatically, 
-      // but for simplicity, just grabbing the timestamp is usually enough.
+      const time = await playerRef.current.getCurrentTime();
+      setActiveTimestamp(Math.floor(time));
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentInput(e.target.value);
-    if (activeTimestamp === null && playerRef.current) {
-      setActiveTimestamp(playerRef.current.getCurrentTime());
+    if (playerRef.current && activeTimestamp === null) {
+      const time = await playerRef.current.getCurrentTime();
+      setActiveTimestamp(Math.floor(time));
     }
   };
 
@@ -64,9 +68,9 @@ export default function ReviewClient({ project }: ReviewClientProps) {
     setDraftNotes(draftNotes.filter((_, idx) => idx !== indexToRemove));
   };
 
-  const jumpToTime = (seconds: number) => {
+  const jumpToTime = async (seconds: number) => {
     if (playerRef.current) {
-      playerRef.current.seekTo(seconds, 'seconds');
+      await playerRef.current.seekTo(seconds);
     }
   };
 
@@ -84,7 +88,7 @@ export default function ReviewClient({ project }: ReviewClientProps) {
     }
   };
 
-  const Player = ReactPlayer as any;
+
 
   return (
     <div className="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
@@ -117,15 +121,9 @@ export default function ReviewClient({ project }: ReviewClientProps) {
       )}
 
       {/* Left Panel: Video Player */}
-      <div className="flex-1 bg-black relative flex items-center justify-center">
-        <div className="w-full max-w-5xl aspect-video bg-slate-900 shadow-2xl">
-          <Player
-            ref={playerRef}
-            url={project.video_url}
-            width="100%"
-            height="100%"
-            controls={true}
-          />
+      <div className="flex-1 bg-black relative flex items-center justify-center p-4">
+        <div className="w-full max-w-5xl aspect-video bg-slate-900 shadow-2xl rounded-lg overflow-hidden">
+          <SmartPlayer ref={playerRef} url={project.video_url} />
         </div>
       </div>
 
