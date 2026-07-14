@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 
 // We must use the service role key to bypass RLS since webhooks run on the backend without user context
@@ -10,51 +9,34 @@ const supabaseAdmin = createClient(
 
 export async function POST(request: Request) {
   try {
-    const rawBody = await request.text();
-    const signature = request.headers.get('x-signature');
-    const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET;
+    // Gumroad sends payloads as application/x-www-form-urlencoded
+    const formData = await request.formData();
+    
+    // Extract the user_id that we passed dynamically in the query parameter
+    // Gumroad exposes custom fields passed in the URL inside the form payload.
+    // If passed as ?user_id=123, it usually comes through directly or under custom fields.
+    const userId = formData.get('user_id');
 
-    if (!signature || !secret) {
-      return NextResponse.json({ error: 'Missing signature or secret' }, { status: 401 });
+    if (!userId || typeof userId !== 'string') {
+      console.error('Webhook missing user_id');
+      return NextResponse.json({ error: 'Missing user_id in payload' }, { status: 400 });
     }
 
-    // Verify the Lemon Squeezy signature using raw body text
-    const hmac = crypto.createHmac('sha256', secret);
-    const digest = Buffer.from(hmac.update(rawBody).digest('hex'), 'utf8');
-    const signatureBuffer = Buffer.from(signature, 'utf8');
+    // Update the user's profile in Supabase to grant pro access
+    const { error } = await supabaseAdmin
+      .from('profiles')
+      .update({ is_pro: true })
+      .eq('id', userId);
 
-    if (digest.length !== signatureBuffer.length || !crypto.timingSafeEqual(digest, signatureBuffer)) {
-      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+    if (error) {
+      console.error('Supabase update failed:', error);
+      return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
     }
+    
+    console.log(`Successfully upgraded user ${userId} to Pro via Gumroad.`);
 
-    const payload = JSON.parse(rawBody);
-    const eventName = payload.meta.event_name;
-
-    // Listen for successful payments
-    if (eventName === 'subscription_created' || eventName === 'order_created') {
-      const customData = payload.meta.custom_data;
-      
-      if (!customData || !customData.user_id) {
-        return NextResponse.json({ error: 'Missing user_id in custom_data' }, { status: 400 });
-      }
-
-      const userId = customData.user_id;
-
-      // Update the user's profile in Supabase to grant pro access
-      const { error } = await supabaseAdmin
-        .from('profiles')
-        .update({ is_pro: true })
-        .eq('id', userId);
-
-      if (error) {
-        console.error('Supabase update failed:', error);
-        return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
-      }
-      
-      console.log(`Successfully upgraded user ${userId} to Pro.`);
-    }
-
-    return NextResponse.json({ message: 'Webhook received' }, { status: 200 });
+    // Return 200 OK so Gumroad knows the ping succeeded
+    return NextResponse.json({ message: 'Webhook received successfully' }, { status: 200 });
 
   } catch (error) {
     console.error('Webhook processing error:', error);

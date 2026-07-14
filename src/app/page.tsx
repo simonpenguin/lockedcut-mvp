@@ -1,40 +1,14 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Video, MessageSquare, Lock, Check } from 'lucide-react';
+import Navbar from '@/components/Navbar';
+import PricingButton from '@/components/PricingButton';
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Header */}
-      <header className="border-b border-slate-200 sticky top-0 z-50 bg-white">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm">
-              <Video className="text-white w-5 h-5" />
-            </div>
-            <span className="font-bold text-xl tracking-tight text-slate-900">LockedCut<span className="text-indigo-600">.</span></span>
-          </div>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="#pricing" className="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">Pricing</Link>
-            <Link href="#" className="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">Contact</Link>
-            <Link href="/dashboard" className="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">Login</Link>
-            <Link 
-              href="/dashboard"
-              className="text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors px-4 py-2 rounded-full shadow-sm"
-            >
-              Sign Up
-            </Link>
-          </nav>
-          {/* Mobile nav fallback (just sign up) */}
-          <div className="md:hidden flex items-center">
-            <Link 
-              href="/dashboard"
-              className="text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors px-4 py-2 rounded-full shadow-sm"
-            >
-              Sign Up
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Navbar />
+
 
       <main className="flex-1 flex flex-col items-center">
         {/* Hero Section */}
@@ -54,7 +28,7 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link 
-              href="/dashboard"
+              href="/login?mode=signup"
               className="px-8 py-4 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-all shadow-xl shadow-indigo-600/20 hover:shadow-indigo-600/30 flex items-center justify-center gap-2"
             >
               Start Enforcing Free
@@ -63,6 +37,24 @@ export default function LandingPage() {
             <button className="px-8 py-4 rounded-full bg-white hover:bg-slate-50 text-slate-700 font-medium transition-colors border border-slate-200 shadow-sm">
               View Demo Project
             </button>
+          </div>
+          
+          {/* Browser Mockup */}
+          <div className="w-full max-w-5xl mt-16 rounded-xl border border-slate-200 shadow-2xl overflow-hidden bg-white">
+            <div className="bg-slate-100 border-b border-slate-200 px-4 py-3 flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-rose-400"></div>
+              <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+              <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
+            </div>
+            <div className="relative aspect-[16/9] w-full">
+              <Image 
+                src="/Screenshot 2026-07-14 200234.png" 
+                alt="LockedCut Dashboard Mockup" 
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            </div>
           </div>
         </section>
 
@@ -75,37 +67,57 @@ export default function LandingPage() {
           
           <div className="grid md:grid-cols-3 gap-8">
             {/* Step 1 */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-8 flex flex-col items-center text-center shadow-sm">
-              <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center mb-6 border border-indigo-100">
-                <Video className="w-7 h-7 text-indigo-600" />
+            <div className="bg-white border border-slate-200 rounded-2xl flex flex-col shadow-sm overflow-hidden">
+              <div className="h-32 w-full relative border-b border-slate-100">
+                <Image 
+                  src="/Screenshot 2026-07-14 200317.png" 
+                  alt="Create a Project" 
+                  fill 
+                  className="object-cover object-top" 
+                  unoptimized
+                />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-slate-900">1. Create a Project</h3>
-              <p className="text-slate-600 leading-relaxed">
-                Paste a YouTube, Vimeo, or MP4 link. Set the exact number of revision rounds allowed by your contract.
-              </p>
+              <div className="p-8 flex flex-col items-center text-center">
+                <h3 className="text-xl font-semibold mb-3 text-slate-900">1. Create a Project</h3>
+                <p className="text-slate-600 leading-relaxed">
+                  Paste a YouTube, Vimeo, or MP4 link. Set the exact number of revision rounds allowed by your contract.
+                </p>
+              </div>
             </div>
 
             {/* Step 2 */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-8 flex flex-col items-center text-center shadow-sm">
-              <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center mb-6 border border-indigo-100">
-                <MessageSquare className="w-7 h-7 text-indigo-600" />
+            <div className="bg-white border border-slate-200 rounded-2xl flex flex-col shadow-sm overflow-hidden">
+              <div className="h-32 w-full relative border-b border-slate-100">
+                <Image 
+                  src="/Screenshot 2026-07-14 200358.png" 
+                  alt="Client Reviews" 
+                  fill 
+                  className="object-cover object-top" 
+                  unoptimized
+                />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-slate-900">2. Client Reviews</h3>
-              <p className="text-slate-600 leading-relaxed">
-                Clients draft timestamped notes on a beautiful, distraction-free interface. No accounts required for them.
-              </p>
+              <div className="p-8 flex flex-col items-center text-center">
+                <h3 className="text-xl font-semibold mb-3 text-slate-900">2. Client Reviews</h3>
+                <p className="text-slate-600 leading-relaxed">
+                  Clients draft timestamped notes on a beautiful, distraction-free interface. No accounts required for them.
+                </p>
+              </div>
             </div>
 
             {/* Step 3 */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-8 flex flex-col items-center text-center relative overflow-hidden shadow-sm">
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-rose-50 z-0 pointer-events-none" />
-              <div className="w-14 h-14 rounded-2xl bg-rose-50 flex items-center justify-center mb-6 border border-rose-100 relative z-10">
-                <Lock className="w-7 h-7 text-rose-600" />
+            <div className="bg-white border border-slate-200 rounded-2xl flex flex-col relative shadow-sm overflow-hidden">
+              <div className="h-32 w-full bg-rose-50 border-b border-rose-100 flex items-center justify-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-rose-100/50 z-0 pointer-events-none" />
+                <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center border border-rose-200 relative z-10 shadow-sm">
+                  <Lock className="w-7 h-7 text-rose-600" />
+                </div>
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-slate-900 relative z-10">3. Hard Lockout</h3>
-              <p className="text-slate-600 leading-relaxed relative z-10">
-                Once they hit submit, the link locks. No more "just one more thing" emails the next day. The round is over.
-              </p>
+              <div className="p-8 flex flex-col items-center text-center relative z-10 bg-white">
+                <h3 className="text-xl font-semibold mb-3 text-slate-900">3. Hard Lockout</h3>
+                <p className="text-slate-600 leading-relaxed">
+                  Once they hit submit, the link locks. No more "just one more thing" emails the next day. The round is over.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -123,7 +135,7 @@ export default function LandingPage() {
               <div className="mb-8">
                 <h3 className="text-2xl font-bold mb-2 text-slate-900">Freelancer</h3>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-extrabold text-slate-900">$0</span>
+                  <span className="text-4xl font-extrabold text-slate-900">$0.00</span>
                   <span className="text-slate-500">/ forever</span>
                 </div>
                 <p className="text-slate-600 mt-4">Perfect for solo editors who want to test the waters and protect small projects.</p>
@@ -143,7 +155,7 @@ export default function LandingPage() {
                 </li>
               </ul>
               <Link 
-                href="/dashboard"
+                href="/login?mode=signup"
                 className="w-full py-4 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-medium text-center transition-colors border border-slate-200 shadow-sm"
               >
                 Get Started Free
@@ -163,7 +175,7 @@ export default function LandingPage() {
                   </span>
                 </div>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-extrabold text-slate-900">$12</span>
+                  <span className="text-4xl font-extrabold text-slate-900">$11.99</span>
                   <span className="text-slate-500">/ month</span>
                 </div>
                 <p className="text-slate-600 mt-4">For full-time editors managing multiple clients and strict timelines.</p>
@@ -171,24 +183,22 @@ export default function LandingPage() {
               <ul className="space-y-4 mb-8 flex-1 relative z-10">
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
+                  <span className="text-slate-700 font-medium">1-Week Free Trial</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
+                  <span className="text-slate-700">Everything in Freelancer</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                   <span className="text-slate-700">Unlimited active projects</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
-                  <span className="text-slate-700">Custom branding & logos</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
-                  <span className="text-slate-700">Export notes to Premiere Pro XML</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                   <span className="text-slate-700">Priority email support</span>
                 </li>
               </ul>
-              <button className="w-full py-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-center transition-colors shadow-md relative z-10">
-                Upgrade to Pro
-              </button>
+              <PricingButton />
             </div>
           </div>
         </section>
@@ -199,8 +209,9 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
           <p>© {new Date().getFullYear()} LockedCut. Stop scope creep.</p>
           <div className="flex items-center gap-6">
-            <Link href="#" className="hover:text-slate-800 transition-colors">Terms of Service</Link>
-            <Link href="#" className="hover:text-slate-800 transition-colors">Privacy Policy</Link>
+            <a href="mailto:lockedcut@atomicmail.io" className="hover:text-slate-800 transition-colors">Support</a>
+            <Link href="/terms" className="hover:text-slate-800 transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="hover:text-slate-800 transition-colors">Privacy Policy</Link>
           </div>
         </div>
       </footer>
