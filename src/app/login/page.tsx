@@ -108,9 +108,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Link href="/" className="inline-flex items-center justify-center gap-2 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
-            <Video className="text-white w-6 h-6" />
-          </div>
+          <img src="/logo.svg" alt="LockedCut Logo" className="w-10 h-10" />
           <span className="font-bold text-2xl tracking-tight text-slate-900">LockedCut<span className="text-indigo-600">.</span></span>
         </Link>
         <h2 className="mt-2 text-center text-3xl font-extrabold text-slate-900">
