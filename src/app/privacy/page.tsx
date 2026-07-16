@@ -33,12 +33,12 @@ export default function PrivacyPolicy() {
 
           <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-4">4. Merchant of Record</h2>
           <p>
-            Our order process is conducted by our online reseller Lemon Squeezy. Lemon Squeezy is the Merchant of Record for all our orders. They process your payment and handle the related data in accordance with their own Privacy Policy. We do not directly store your credit card details on our servers.
+            Our order process is conducted by our online reseller Gumroad. Gumroad is the Merchant of Record for all our orders. They process your payment and handle the related data in accordance with their own Privacy Policy. We do not directly store your credit card details on our servers.
           </p>
           
           <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-4">5. Contact Us</h2>
           <p>
-            If you have questions or comments about this notice, you may email us at support@lockedcut.com.
+            If you have questions or comments about this notice, you may email us at lockedcut@atomicmail.io.
           </p>
         </div>
       </div>

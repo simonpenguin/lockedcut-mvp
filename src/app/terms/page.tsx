@@ -28,7 +28,7 @@ export default function TermsOfService() {
 
           <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-4">3. Payments and Subscriptions</h2>
           <p>
-            We use Lemon Squeezy as our Merchant of Record. By subscribing to a paid tier, you agree to their terms of sale. Subscriptions are billed on a recurring basis as selected during checkout. You may cancel your subscription at any time.
+            We use Gumroad as our Merchant of Record. By subscribing to a paid tier, you agree to their terms of sale. Subscriptions are billed on a recurring basis as selected during checkout. You may cancel your subscription at any time.
           </p>
 
           <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-4">4. Prohibited Activities</h2>
