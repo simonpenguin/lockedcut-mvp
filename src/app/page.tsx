@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { ArrowRight, Video, MessageSquare, Lock, Check } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import PricingButton from '@/components/PricingButton';
+import HeroCTA from '@/components/HeroCTA';
 
 export default function LandingPage() {
   return (
@@ -27,13 +28,7 @@ export default function LandingPage() {
             The only video review tool built specifically to enforce your contract. Clients get one link, one round of feedback, and a hard lockout when they submit.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Link 
-              href="/login?mode=signup"
-              className="px-8 py-4 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-all shadow-xl shadow-indigo-600/20 hover:shadow-indigo-600/30 flex items-center justify-center gap-2"
-            >
-              Start Enforcing Free
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            <HeroCTA />
             <button className="px-8 py-4 rounded-full bg-white hover:bg-slate-50 text-slate-700 font-medium transition-colors border border-slate-200 shadow-sm">
               View Demo Project
             </button>

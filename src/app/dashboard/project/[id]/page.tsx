@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, use } from 'react';
 import { getProjectById, getProjectNotes, ProjectData, NoteData } from '@/app/actions/projectActions';
 import SmartPlayer, { SmartPlayerRef } from '@/components/SmartPlayer';
-import { Clock, Copy, ArrowLeft } from 'lucide-react';
+import { Clock, Copy, ArrowLeft, Check } from 'lucide-react';
 import Link from 'next/link';
 
 export default function EditorProjectView({ params }: { params: Promise<{ id: string }> }) {
@@ -11,6 +11,7 @@ export default function EditorProjectView({ params }: { params: Promise<{ id: st
   const [project, setProject] = useState<ProjectData | null>(null);
   const [notes, setNotes] = useState<NoteData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isCopied, setIsCopied] = useState(false);
   
   const playerRef = useRef<SmartPlayerRef>(null);
 
@@ -34,7 +35,8 @@ export default function EditorProjectView({ params }: { params: Promise<{ id: st
     if (project) {
       const link = `${window.location.origin}/review/${project.access_token}`;
       navigator.clipboard.writeText(link);
-      alert('Client Review Link copied to clipboard!');
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
     }
   };
 
@@ -76,9 +78,13 @@ export default function EditorProjectView({ params }: { params: Promise<{ id: st
         </div>
         <button 
           onClick={copyToClipboard}
-          className="flex items-center gap-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-4 py-2 rounded-lg font-medium transition-colors"
+          className="flex items-center gap-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-4 py-2 rounded-lg font-medium transition-colors min-w-[170px] justify-center"
         >
-          <Copy size={16} /> Copy Client Link
+          {isCopied ? (
+            <><Check size={16} /> Copied!</>
+          ) : (
+            <><Copy size={16} /> Copy Client Link</>
+          )}
         </button>
       </div>
 

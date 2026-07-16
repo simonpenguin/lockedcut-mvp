@@ -173,11 +173,11 @@ export async function createProject(
       .eq('editor_id', userId);
       
     if (countError) {
-      throw new Error('Failed to verify project limits.');
+      return { error: 'Failed to verify project limits.' };
     }
 
     if (count !== null && count >= 3) {
-      throw new Error('FREE_LIMIT_REACHED');
+      return { error: 'FREE_LIMIT_REACHED' };
     }
   }
 
@@ -197,7 +197,7 @@ export async function createProject(
 
   if (error) {
     console.error('Error creating project:', error);
-    throw new Error(error.message || 'Failed to create project.');
+    return { error: error.message || 'Failed to create project.' };
   }
 
   return data as ProjectData;

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { createProject, getEditorProjects, ProjectData } from '../actions/projectActions';
 import { supabase } from '@/lib/supabase/client';
-import { PlusCircle, Link as LinkIcon, Copy, Video, ArrowRight } from 'lucide-react';
+import { PlusCircle, Link as LinkIcon, Copy, Video, ArrowRight, Check } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Dashboard() {
@@ -13,6 +13,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [shareLink, setShareLink] = useState('');
+  const [isCopied, setIsCopied] = useState(false);
 
   const [limitReached, setLimitReached] = useState(false);
   const [projects, setProjects] = useState<ProjectData[]>([]);
@@ -45,7 +46,19 @@ export default function Dashboard() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not logged in. Please sign in first.');
 
-      const project = await createProject(title, videoUrl, revisions === '' ? 1 : revisions, user.id);
+      const result = await createProject(title, videoUrl, revisions === '' ? 1 : revisions, user.id);
+      
+      if (result && 'error' in result) {
+        if (result.error === 'FREE_LIMIT_REACHED') {
+          setLimitReached(true);
+        } else {
+          setError(result.error);
+        }
+        setLoading(false);
+        return;
+      }
+
+      const project = result as ProjectData;
       const link = `${window.location.origin}/review/${project.access_token}`;
       setShareLink(link);
       
@@ -55,11 +68,7 @@ export default function Dashboard() {
       setTitle('');
       setVideoUrl('');
     } catch (err: any) {
-      if (err.message === 'FREE_LIMIT_REACHED') {
-        setLimitReached(true);
-      } else {
-        setError(err.message || 'Failed to create project');
-      }
+      setError(err.message || 'Failed to create project');
     } finally {
       setLoading(false);
     }
@@ -67,7 +76,8 @@ export default function Dashboard() {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareLink);
-    alert('Copied to clipboard!');
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
 
   return (
@@ -165,10 +175,10 @@ export default function Dashboard() {
                 />
                 <button
                   onClick={copyToClipboard}
-                  className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 px-4 py-2 rounded-lg transition-colors"
+                  className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 px-4 py-2 rounded-lg transition-colors flex items-center justify-center w-12"
                   title="Copy to clipboard"
                 >
-                  <Copy size={18} />
+                  {isCopied ? <Check size={18} className="text-emerald-600" /> : <Copy size={18} />}
                 </button>
               </div>
             </div>
