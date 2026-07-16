@@ -40,7 +40,7 @@ export default function PricingButton() {
 
   return (
     <a 
-      href={`https://zasiman.gumroad.com/l/rzguwx?user_id=${user.id}`}
+      href={`https://zasiman.gumroad.com/l/rzguwx?email=${encodeURIComponent(user.email || '')}`}
       className="block w-full py-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-center transition-colors shadow-md relative z-10"
     >
       Upgrade to Pro
