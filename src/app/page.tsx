@@ -41,13 +41,14 @@ export default function LandingPage() {
               <div className="w-3 h-3 rounded-full bg-amber-400"></div>
               <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
             </div>
-            <div className="relative aspect-[16/9] w-full">
-              <Image 
-                src="/Screenshot 2026-07-14 200234.png" 
-                alt="LockedCut Dashboard Mockup" 
-                fill
-                className="object-cover"
-                unoptimized
+            <div className="relative aspect-[16/9] w-full bg-slate-900 flex items-center justify-center">
+              <video 
+                src="/locked-cut_demo.mp4" 
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                className="w-full h-full object-contain"
               />
             </div>
           </div>
